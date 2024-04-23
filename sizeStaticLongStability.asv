@@ -1,0 +1,39 @@
+function [ Aircraft ] = sizeStaticLongStability( Aircraft )
+convErr = 0.05; % 5% change between loops in CG location
+conv = false;
+
+CGvec = [0 0];
+ct = 1;
+while ~conv
+    
+    
+    %% Calculate Center of Gravity and Inertia Tensor
+    [Aircraft] = calcSuavInertiaCG(Aircraft);
+    
+
+    %% Re-Size Tail Around Static Margin - Recalculate Polars
+    Vh = 2 .* (Xg./Aircraft.Aero.Wing.chord - Aircraft.Performance.staticMargin);
+    Aircraft.Aero.tail2wing = (Vh .* Aircraft.Aero.Wing.chord ./ Xt);
+    Aircraft.Aero.Tail.Swet = Aircraft.Aero.Wing.Swet .* Aircraft.Aero.tail2wing;
+    Aircraft.Aero.Tail.chord = Aircraft.Aero.Wing.chord ./ 2;
+    Aircraft.Aero.Tail.span = Aircraft.Aero.Tail.Swet ./ Aircraft.Aero.Tail.chord;
+    Aircraft.Aero.Tail.AR = Aircraft.Aero.Tail.span.^2 ./ Aircraft.Aero.Tail.Swet;
+    
+    %% Check Convergence
+    CGvec(1) = CGvec(2);
+    CGvec(2) = Xcg;
+    CGerr = (CGvec(2) - CGvec(1)) ./ CGvec(1);
+    if CGerr < convErr
+       conv = true;
+    else
+       ct = ct + 1; 
+    end
+end
+
+%% Package Output Variables
+Aircraft.Mass.Xcg = Xcg;
+Aircraft.Stability.Xg = Xg;
+Aircraft.Stability.Xt = Xt;
+Aircraft.Stability.SM = (Xg./Aircraft.Aero.Wing.chord) - 0.5.*(Aircraft.Aero.tail2wing.*(Xt./Aircraft.Aero.Wing.chord));
+end
+

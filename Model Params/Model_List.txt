@@ -1,0 +1,54 @@
+################# LIST OF ALL STORED MODEL PARAMETERS #################
+
+--------------Batteries--------------
+
+LG HG2.mat:
+     batteryName: LG HG2
+     socProfile: Model Params     mcell: 0.0584
+     Rcell: 0.000143
+     Vmax: 4.15
+     Vmin: 2.55
+     Imax: 20
+     Imin: -4
+     Tmax: 50
+
+
+Panasonic 18650b.mat:
+     batteryName: Panasonic 18650b
+     socProfile: Model Params     mcell: 0.0475
+     Rcell: 0.000143
+     Vmax: 4.15
+     Vmin: 2.55
+     Imax: 20
+     Imin: -4
+     Tmax: 50
+
+
+--------------Battery Cell Models--------------
+
+--------------MPPTs--------------
+
+Common.mat:
+     MPPTname: Common
+     mpptEff: @(boost)-1e-4.*(boost).^2-0.004.*boost+0.9941
+
+
+--------------Solar Cells--------------
+
+Sunpower C60.mat:
+     cellName: Sunpower C60
+     n_sol: 0.226
+     Acell: 0.0155
+     ksm: 0.59
+     Isc: 6.32
+     Io: 1e-10
+     Voc: 0.68
+     kTq: 0.02586
+     dVdT: -0.3055
+     dIdT: 0.0455
+     dPdT: -0.391
+     Ttest: 25
+     Tsat: 80
+     n: 0.7
+
+
